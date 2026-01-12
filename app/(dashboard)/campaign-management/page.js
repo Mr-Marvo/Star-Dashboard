@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Input, Button, Tabs, ConfigProvider } from 'antd';
+import { Input, Button, Tabs, ConfigProvider, Empty, Spin } from 'antd';
 import { Search, Trophy, Calendar, Users, Video, Award, Eye, Plus } from 'lucide-react';
 import { getAllCampaigns } from '@/app/services/campaignService';
 import CustomPagination from "@/components/CustomPagination";
@@ -19,7 +19,7 @@ export default function CampaignManagementPage() {
 
     const [selectedCampaign, setSelectedCampaign] = useState(null);
 
-    const { trigger: triggerFetch } = useLazyFetch(getAllCampaigns);
+    const { trigger: triggerFetch, loading } = useLazyFetch(getAllCampaigns);
 
     const [fetchedCampaigns, setFetchedCampaigns] = useState([]);
     const [pagination, setPagination] = useState({
@@ -76,15 +76,8 @@ export default function CampaignManagementPage() {
 
     const deriveCampaignStatus = (campaign) => {
         const now = dayjs();
-        // const reviewStart = dayjs(campaign.reviewStartTime);
-        // const votingStart = dayjs(campaign.votingStartTime);
         const complete = dayjs(campaign.completeTime);
         const enrollStart = dayjs(campaign.enrollStartTime);
-
-        // if (now.isAfter(complete)) return 'Completed';
-        // if (now.isAfter(votingStart) && now.isBefore(complete)) return 'Voting Started';
-        // if (now.isAfter(reviewStart) && now.isBefore(votingStart)) return 'In Review';
-        // if (now.isBefore(enrollStart)) return 'Upcoming';
         if (now.isBefore(enrollStart)) return 'Upcoming';
         if (now.isAfter(complete)) return 'Completed';
         return 'Active';
@@ -227,17 +220,27 @@ export default function CampaignManagementPage() {
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {fetchedCampaigns.map(campaign => (
-                    <CampaignCard
-                        key={campaign.id}
-                        data={{
-                            ...campaign,
-                            iconColor: 'bg-purple-100 text-purple-500'
-                        }}
-                    />
-                ))}
-            </div>
+            {loading ? (
+                <div className="flex justify-center py-20">
+                    <Spin size="large" />
+                </div>
+            ) : fetchedCampaigns.length === 0 ? (
+                <div className="py-20">
+                    <Empty description="No campaigns found" />
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {fetchedCampaigns.map(campaign => (
+                        <CampaignCard
+                            key={campaign.id}
+                            data={{
+                                ...campaign,
+                                iconColor: 'bg-purple-100 text-purple-500'
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
 
             {pagination.total > pagination.pageSize && (
                 <CustomPagination

@@ -360,7 +360,7 @@ export default function VideoModerationPage() {
                                     <CheckCircle size={18} />
                                 </button>
                             </Tooltip>
-                        ) : record.status === 'REJECTED' ? (
+                        ) : record.status !== 'REJECTED' ? (
                             <Tooltip title={actionable ? "Deactivate" : "Voting Started"}>
                                 <button
                                     onClick={(e) => actionable && handleAction(e, "delete", record)}
@@ -370,17 +370,7 @@ export default function VideoModerationPage() {
                                     <Ban size={18} />
                                 </button>
                             </Tooltip>
-                        ) : (
-                            <Tooltip title={actionable ? "Deactivate" : "Voting Started"}>
-                                <button
-                                    onClick={(e) => actionable && handleAction(e, "delete", record)}
-                                    className={`p-1 rounded transition-colors ${actionable ? "text-red-500 hover:bg-red-50" : "text-gray-300 cursor-not-allowed"}`}
-                                    disabled={!actionable}
-                                >
-                                    <Ban size={18} />
-                                </button>
-                            </Tooltip>
-                        )}
+                        ) : null}
                     </div>
                 );
             },
@@ -636,16 +626,7 @@ export default function VideoModerationPage() {
                                                 </>
                                             )}
 
-                                            {selectedVideo.status === 'REJECTED' && (
-                                                <Button
-                                                    danger
-                                                    size="large"
-                                                    onClick={() => handleDeactivate(selectedVideo)}
-                                                    className="w-full flex items-center justify-center gap-2 !bg-[#C5C5C5] !text-gray-600 hover:!bg-gray-200 !border-none !h-12 !text-base rounded-lg font-medium"
-                                                >
-                                                    Deactivate
-                                                </Button>
-                                            )}
+
                                         </div>
                                     </div>
                                 </div>
