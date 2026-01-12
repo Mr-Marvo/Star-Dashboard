@@ -160,7 +160,7 @@ export default function EditCampaign({ open, onCancel, onSuccess, campaign }) {
                             label={<span className="text-white">Campaign Title *</span>}
                             rules={[
                                 { required: true, message: 'Please enter campaign title' },
-                                { min: 5, max: 50, message: 'Title must be between 5 and 50 characters' },
+                                { min: 1, max: 100, message: 'Title must be between 1 and 100 characters' },
                                 {
                                     validator: (_, value) => {
                                         if (value && !value.trim()) {
@@ -173,7 +173,7 @@ export default function EditCampaign({ open, onCancel, onSuccess, campaign }) {
                         >
                             <Input className="!bg-[#2e2e48] !border-[#444] !text-white" />
                         </Form.Item>
-                        {validatingTitle && <div className="text-blue-400 text-xs mt-1">Validating title...</div>}
+                        {/* {validatingTitle && <div className="text-blue-400 text-xs mt-1">Validating title...</div>} */}
                         {titleError && <div className="text-red-500 text-xs mt-1">{titleError}</div>}
                     </div>
                     <Form.Item
@@ -207,7 +207,8 @@ export default function EditCampaign({ open, onCancel, onSuccess, campaign }) {
                         }
                     ]}
                 >
-                    <TextArea rows={3} className="!bg-[#2e2e48] !border-[#444] !text-white" />
+                    <TextArea rows={3} minLength={20}
+                        maxLength={300} className="!bg-[#2e2e48] !border-[#444] !text-white" />
                 </Form.Item>
 
                 <div className="grid grid-cols-2 gap-4">
