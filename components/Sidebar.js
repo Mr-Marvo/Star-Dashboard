@@ -16,8 +16,8 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     TeamOutlined,
-    LeftOutlined,
     RightOutlined,
+    LeftOutlined
 } from '@ant-design/icons';
 import { logoutUser } from '@/app/services/authService';
 import useLazyFetch from '@/app/hooks/useLazyFetch';
@@ -80,6 +80,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             icon: <TrophyOutlined />,
             label: <Link href="/winners">Winners</Link>,
         },
+
         {
             key: '/settings',
             icon: <SettingOutlined />,
