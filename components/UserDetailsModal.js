@@ -121,29 +121,31 @@ const UserDetailsModal = ({ open, onClose, user, onBan, onActivate }) => {
                                     </div>
                                 </div> */}
 
-                                <div>
-                                    <h3 className="text-lg font-bold mb-4">Account Actions</h3>
-                                    <div className="flex flex-col gap-4">
-                                        {user?.status === 'BANNED' || user?.status === 'BLOCKED' ? (
-                                            <Button
-                                                className="!h-12 !bg-[#00D222] !text-white !border-none hover:!bg-[#00D222]/80 flex items-center justify-center gap-2 font-medium"
-                                                block
-                                                onClick={() => onActivate(user)}
-                                            >
-                                                <CheckCircleOutlined /> Active User
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                className="!h-12 !bg-red-400 !text-white !border-none hover:!bg-red-500 flex items-center justify-center gap-2 font-medium"
-                                                block
-                                                danger
-                                                onClick={() => onBan(user)}
-                                            >
-                                                <StopOutlined /> Ban User
-                                            </Button>
-                                        )}
+                                {user?.status !== 'DELETED' && (
+                                    <div>
+                                        <h3 className="text-lg font-bold mb-4">Account Actions</h3>
+                                        <div className="flex flex-col gap-4">
+                                            {user?.status === 'BANNED' || user?.status === 'BLOCKED' ? (
+                                                <Button
+                                                    className="!h-12 !bg-[#00D222] !text-white !border-none hover:!bg-[#00D222]/80 flex items-center justify-center gap-2 font-medium"
+                                                    block
+                                                    onClick={() => onActivate(user)}
+                                                >
+                                                    <CheckCircleOutlined /> Active User
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    className="!h-12 !bg-red-400 !text-white !border-none hover:!bg-red-500 flex items-center justify-center gap-2 font-medium"
+                                                    block
+                                                    danger
+                                                    onClick={() => onBan(user)}
+                                                >
+                                                    <StopOutlined /> Ban User
+                                                </Button>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         ),
                     },
