@@ -10,6 +10,7 @@ export const NotificationContext = createContext({});
 export function NotificationContextProvider({ children }) {
     const [api, contextHolder] = notification.useNotification();
     const [isShown, setIsShown] = useState(false); //401 issue
+    const [unreadCount, setUnreadCount] = useState(0);
     const placement = "bottomLeft";
     const router = useRouter();
 
@@ -90,6 +91,8 @@ export function NotificationContextProvider({ children }) {
             value={{
                 openNotification,
                 handleError,
+                unreadCount,
+                setUnreadCount
             }}
         >
             <ConfigProvider

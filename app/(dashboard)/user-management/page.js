@@ -196,6 +196,11 @@ export default function UserManagementPage() {
                         </Button>
                     );
                 }
+
+                if (record.status === 'DELETED') {
+                    return null;
+                }
+
                 return (
                     <Button
                         danger

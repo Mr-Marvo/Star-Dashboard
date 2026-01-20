@@ -3,14 +3,18 @@
 import React, { useState } from 'react';
 import { Layout, Badge, Popover } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NotificationsPopover from '@/components/NotificationsPopover';
+import { useContext } from 'react';
+import { NotificationContext } from '@/app/context/NotificationContext';
 
 const { Header: AntHeader } = Layout;
 
 export default function Header({ collapsed }) {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
+    const { unreadCount } = useContext(NotificationContext);
 
     const handleOpenChange = (newOpen) => {
         setOpen(newOpen);
@@ -68,7 +72,7 @@ export default function Header({ collapsed }) {
                     placement="bottomRight"
                     styles={{ body: { padding: 0 } }}
                 >
-                    <Badge count={2} size="small">
+                    <Badge count={unreadCount} size="small">
                         <BellOutlined style={{ color: 'black' }} className="text-xl text-gray-600 cursor-pointer" />
                     </Badge>
                 </Popover>
