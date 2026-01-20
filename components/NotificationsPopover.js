@@ -124,12 +124,7 @@ export default function NotificationsPopover({ onClose }) {
                             key={notif.id}
                             className={`p-4 border-b border-gray-50 flex justify-between items-start gap-3 group transition-colors ${index % 2 !== 0 ? 'bg-[#e0f7fa]' : 'bg-white hover:bg-gray-50'
                                 }`}
-                        // Note: User image showed light blue for unread. The image actually looks more like 'bg-sky-50' or similar. 
-                        // Previous code used bg-sky-50. User prompt says "UI should exactly like image smooth".
-                        // Image background looks like a very light cyan/blue.
-                        // I'll stick to a nice light blue/cyan. #e0f7fa is cyan-50 equivalent manually or sky-50.
-                        // Let's use generic styles or custom hex to match image exactly if needed.
-                        // Image shows a very light blue.
+
 
                         >
                             {!notif.isRead && (
