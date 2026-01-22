@@ -11,3 +11,7 @@ export const deleteNotification = async (data) => {
 export const markNotificationRead = async (data) => {
     return authorizedAxiosInstance.post("/admin-notification/mark-notification-read", data);
 };
+
+
+
+

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -22,13 +22,20 @@ import {
 import { logoutUser } from '@/app/services/authService';
 import useLazyFetch from '@/app/hooks/useLazyFetch';
 import { removeCookie, removeLocalStorageData } from '@/app/helpers/storageHelper';
+import { UserContext } from '@/app/context/UserContext';
 
 const { Sider } = Layout;
 
 export default function Sidebar({ collapsed, setCollapsed }) {
     const pathname = usePathname();
     const router = useRouter();
+    const { user } = useContext(UserContext);
     const { trigger: triggerLogout } = useLazyFetch(logoutUser);
+
+    const formatRole = (role) => {
+        if (!role) return '';
+        return role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    };
 
     const handleLogout = async () => {
         const res = await triggerLogout({}, { successMsg: true, errorMsg: true });
@@ -117,7 +124,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
                     {!collapsed && (
                         <div>
                             <h1 className="text-white font-bold text-xl">Voice Star</h1>
-                            <p className="text-white/50 text-xs">Super Admin</p>
+                            <p className="text-white/50 text-xs">{formatRole(user?.type) || 'Super Admin'}</p>
                         </div>
                     )}
                     <Button
