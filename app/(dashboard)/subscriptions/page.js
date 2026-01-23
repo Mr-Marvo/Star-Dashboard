@@ -32,26 +32,27 @@ export default function SubscriptionsPage() {
     const { trigger: cancelSub } = useLazyFetch(cancelSubscription);
     const { trigger: getStaticData } = useLazyFetch(getSubscriptionStaticData);
 
-    useEffect(() => {
-        const fetchStaticData = async () => {
-            try {
-                const response = await getStaticData({});
-                if (response?.data?.success) {
-                    const apiData = response.data.data;
-                    setStats({
-                        ...apiData,
-                        activeSubscriptions: apiData.activeSubcriptions || 0
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching static data", error);
+    const fetchStaticData = React.useCallback(async () => {
+        try {
+            const response = await getStaticData({});
+            if (response?.data?.success) {
+                const apiData = response.data.data;
+                setStats({
+                    ...apiData,
+                    activeSubscriptions: apiData.activeSubcriptions || 0
+                });
             }
-        };
+        } catch (error) {
+            console.error("Error fetching static data", error);
+        }
+    }, [getStaticData]);
+
+    useEffect(() => {
         fetchStaticData();
-    }, []);
+    }, [fetchStaticData]);
 
     // Fetch Subscriptions List
-    const fetchSubscriptions = async () => {
+    const fetchSubscriptions = React.useCallback(async () => {
         setLoading(true);
         try {
             const statusMap = {
@@ -86,7 +87,7 @@ export default function SubscriptionsPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [pagination.page, pagination.perPage, activeTab, searchText]);
 
     // Debounce search and effect
     useEffect(() => {
@@ -94,7 +95,7 @@ export default function SubscriptionsPage() {
             fetchSubscriptions();
         }, 300);
         return () => clearTimeout(timer);
-    }, [activeTab, searchText, pagination.page]); // Depend on page, tab, search
+    }, [activeTab, searchText, pagination.page, fetchSubscriptions]); // Depend on page, tab, search
 
     const handlePageChange = (page) => {
         setPagination(prev => ({ ...prev, page }));
