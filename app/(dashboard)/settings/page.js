@@ -5,10 +5,14 @@ import { Input, Button } from 'antd';
 import useLazyFetch from '@/app/hooks/useLazyFetch';
 import { authAdmin } from '@/app/services/authService';
 import { updateNotificationSettings, changePassword, updateProfileInformation } from '@/app/services/settingService';
+import { logoutUser } from '@/app/services/authService';
 import { UserContext } from '@/app/context/UserContext';
 import { NotificationContext } from '@/app/context/NotificationContext';
+import { useRouter } from 'next/navigation';
+import { removeCookie, removeLocalStorageData } from '@/app/helpers/storageHelper';
 
 export default function SettingsPage() {
+    const router = useRouter();
     const { user, fetchUser } = useContext(UserContext);
     const { openNotification } = useContext(NotificationContext);
 
@@ -35,6 +39,19 @@ export default function SettingsPage() {
     const { trigger: updateSettings } = useLazyFetch(updateNotificationSettings);
     const { trigger: updateProfile, loading: profileLoading } = useLazyFetch(updateProfileInformation);
     const { trigger: updatePassword, loading: passwordLoading } = useLazyFetch(changePassword);
+    const { trigger: triggerLogout } = useLazyFetch(logoutUser);
+
+    const handleLogout = async () => {
+        try {
+            await triggerLogout({}, { successMsg: false, errorMsg: false });
+        } catch (error) {
+            console.error("Logout API failed:", error);
+        } finally {
+            removeCookie("auth-token");
+            removeLocalStorageData("userData");
+            router.push("/login");
+        }
+    };
 
     const formatRole = (role) => {
         if (!role) return 'Super Admin';
@@ -42,8 +59,20 @@ export default function SettingsPage() {
     };
 
     useEffect(() => {
+        fetchUser();
+    }, [fetchUser]);
+
+    useEffect(() => {
         if (user) {
+            const types = user.notificationAlertType || [];
+
             const timer = setTimeout(() => {
+                setNotifications({
+                    video: types.includes("VIDEO_MODERATION_ALERTS"),
+                    campaign: types.includes("CAMPAIGN_REMINDERS"),
+                    reports: types.includes("WEEKLY_REPORTS")
+                });
+
                 setProfile({
                     fullName: user.fullName || '',
                     userName: user.userName || '',
@@ -84,6 +113,7 @@ export default function SettingsPage() {
 
         if (response) {
             setNotifications(prev => ({ ...prev, [key]: willBeChecked }));
+            fetchUser(); // Refresh user data to sync across app
         }
     };
 
@@ -118,7 +148,12 @@ export default function SettingsPage() {
         }, { successMsg: true, errorMsg: true });
 
         if (response?.data?.success) {
-            fetchUser(); // Refresh user data in context
+            if (user?.userName !== profile.userName) {
+                // If email changed, logout
+                handleLogout();
+            } else {
+                fetchUser(); // Refresh user data in context
+            }
         }
     };
 
@@ -149,6 +184,7 @@ export default function SettingsPage() {
         const response = await updatePassword(passwords, { successMsg: true, errorMsg: true });
         if (response?.data?.success) {
             setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
+            handleLogout();
         }
     };
 
