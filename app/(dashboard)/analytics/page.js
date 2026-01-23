@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Select, ConfigProvider, Progress } from "antd";
+import React, { useState, useEffect } from "react";
+import { Select, ConfigProvider, message } from "antd";
 import {
     Users,
     UserCheck,
@@ -11,130 +11,103 @@ import {
 } from "lucide-react";
 import CustomTable from "@/components/CustomTable";
 import CustomPagination from "@/components/CustomPagination";
+import { getAnalytics } from "@/app/services/analyticsService";
 
 const AnalyticsPage = () => {
     const [dateRange, setDateRange] = useState("30");
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [analyticsData, setAnalyticsData] = useState(null);
 
-    // Mock Data based on the user's description and "2nd image has all content" requirement
+    useEffect(() => {
+        fetchAnalytics(dateRange);
+    }, [dateRange]);
+
+    const fetchAnalytics = async (days) => {
+        setLoading(true);
+        try {
+            const response = await getAnalytics(days);
+            if (response.data.success) {
+                setAnalyticsData(response.data.data);
+            } else {
+                message.error(response.data.message || "Failed to fetch analytics");
+            }
+        } catch (error) {
+            console.error("Error fetching analytics:", error);
+            message.error("An error occurred while fetching analytics");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const totals = analyticsData?.totals || {};
+    const daily = analyticsData?.daily || {};
+
     const stats = [
         {
             title: "Total Signups",
-            value: "20",
+            value: totals.totalSignups || 0,
             icon: <Users className="w-6 h-6 text-white" />,
             bgColor: "bg-blue-600",
         },
         {
             title: "Active Users",
-            value: "50",
+            value: totals.activeUsers || 0,
             icon: <UserCheck className="w-6 h-6 text-white" />,
             bgColor: "bg-green-600",
         },
         {
             title: "Videos Uploaded",
-            value: "30",
+            value: totals.totalVideos || 0,
             icon: <Video className="w-6 h-6 text-white" />,
             bgColor: "bg-purple-600",
         },
         {
             title: "Total Revenue",
-            value: "$199.60",
+            value: `$${(totals.totalRevenue || 0).toLocaleString()}`,
             icon: <DollarSign className="w-6 h-6 text-white" />,
             bgColor: "bg-orange-500",
         },
     ];
 
-    const signupTrends = [
-        { date: "Nov 26", value: 24, percent: 30 },
-        { date: "Nov 25", value: 54, percent: 60 },
-        { date: "Nov 24", value: 77, percent: 85 },
-        { date: "Nov 23", value: 33, percent: 40 },
-        { date: "Nov 22", value: 60, percent: 70 },
-        { date: "Nov 21", value: 50, percent: 55 },
-        { date: "Nov 20", value: 20, percent: 25 },
-        { date: "Nov 19", value: 24, percent: 30 },
-        { date: "Nov 18", value: 15, percent: 20 },
-        { date: "Nov 17", value: 10, percent: 15 },
-    ];
+    // Helper to calculate percentage for trend bars
+    const calculatePercent = (value, array) => {
+        if (!array || array.length === 0) return 0;
+        const maxValue = Math.max(...array.map(item => item.value), 0);
+        return maxValue > 0 ? (value / maxValue) * 100 : 0;
+    };
 
-    const revenueTrends = [
-        { date: "Nov 26", value: "$197", percent: 45 },
-        { date: "Nov 25", value: "$200", percent: 50 },
-        { date: "Nov 24", value: "$250", percent: 65 },
-        { date: "Nov 23", value: "$198", percent: 46 },
-        { date: "Nov 22", value: "$210", percent: 52 },
-        { date: "Nov 21", value: "$199", percent: 48 },
-        { date: "Nov 20", value: "$168", percent: 40 },
-        { date: "Nov 19", value: "$130", percent: 30 },
-        { date: "Nov 18", value: "$120", percent: 28 },
-        { date: "Nov 17", value: "$100", percent: 25 },
-    ];
+    const signupTrends = (daily.signups || []).slice(-10).reverse().map(item => ({
+        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        value: item.value,
+        percent: calculatePercent(item.value, daily.signups)
+    }));
 
-    const tableData = [
-        {
-            id: 1,
-            date: "11/26/2025",
-            signups: 23,
-            activeUsers: 23,
-            videos: 11,
-            votes: 100,
-            revenue: "$190.20",
-        },
-        {
-            id: 2,
-            date: "11/26/2025",
-            signups: 22,
-            activeUsers: 23,
-            videos: 10,
-            votes: 120,
-            revenue: "$190.20",
-        },
-        {
-            id: 3,
-            date: "11/26/2025",
-            signups: 11,
-            activeUsers: 23,
-            videos: 7,
-            votes: 80,
-            revenue: "$190.20",
-        },
-        {
-            id: 4,
-            date: "11/26/2025",
-            signups: 10,
-            activeUsers: 23,
-            videos: 8,
-            votes: 29,
-            revenue: "$190.20",
-        },
-        {
-            id: 5,
-            date: "11/26/2025",
-            signups: 14,
-            activeUsers: 23,
-            videos: 20,
-            votes: 200,
-            revenue: "$190.20",
-        },
-        {
-            id: 6,
-            date: "11/26/2025",
-            signups: 12,
-            activeUsers: 23,
-            videos: 21,
-            votes: 299,
-            revenue: "$190.20",
-        },
-        {
-            id: 7,
-            date: "11/26/2025",
-            signups: 20,
-            activeUsers: 23,
-            videos: 16,
-            votes: 176,
-            revenue: "$190.20",
-        },
-    ];
+    const revenueTrends = (daily.revenue || []).slice(-10).reverse().map(item => ({
+        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        value: `$${item.value}`,
+        percent: calculatePercent(item.value, daily.revenue)
+    }));
+
+    // Merge daily data for the table
+    const tableData = (daily.signups || []).map((item, index) => {
+        const date = item.date;
+        const signups = item.value;
+        const revenue = daily.revenue?.[index]?.value || 0;
+        const activeUsers = daily.activeUsers?.[index]?.value || 0;
+        const videos = daily.videos?.[index]?.value || 0;
+        const votes = daily.votes?.[index]?.value || 0;
+
+        return {
+            id: index,
+            date: new Date(date).toLocaleDateString('en-US'),
+            signups,
+            activeUsers,
+            videos,
+            votes,
+            revenue: `$${revenue.toLocaleString()}`,
+        };
+    }).reverse();
 
     const tableColumns = [
         {
@@ -175,6 +148,10 @@ const AnalyticsPage = () => {
         },
     ];
 
+    // Pagination logic
+    const pageSize = 10;
+    const paginatedData = tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
     return (
         <ConfigProvider
             theme={{
@@ -196,7 +173,11 @@ const AnalyticsPage = () => {
                     <Select
                         defaultValue="30"
                         className="w-40"
-                        onChange={(val) => setDateRange(val)}
+                        loading={loading}
+                        onChange={(val) => {
+                            setDateRange(val);
+                            setCurrentPage(1);
+                        }}
                         suffixIcon={<ChevronDown className="w-4 h-4 text-gray-400" />}
                         options={[
                             { value: "7", label: "Last 7 Days" },
@@ -216,7 +197,7 @@ const AnalyticsPage = () => {
                             <div className="flex flex-col">
                                 <span className="text-gray-500 text-sm">{stat.title}</span>
                                 <span className="text-2xl font-bold mt-1 text-gray-900">
-                                    {stat.value}
+                                    {loading ? "..." : stat.value}
                                 </span>
                             </div>
                             <div
@@ -236,22 +217,28 @@ const AnalyticsPage = () => {
                             Daily Signup Trends
                         </h3>
                         <div className="space-y-4">
-                            {signupTrends.map((item, index) => (
-                                <div key={index} className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2 w-24 min-w-[6rem] text-gray-500 text-sm">
-                                        <Calendar className="w-4 h-4" />
-                                        <span>{item.date}</span>
-                                    </div>
-                                    <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-blue-600 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10"
-                                            style={{ width: `${item.percent}%` }}
-                                        >
-                                            {item.value}
+                            {loading ? (
+                                <div className="h-64 flex items-center justify-center text-gray-400">Loading trends...</div>
+                            ) : signupTrends.length > 0 ? (
+                                signupTrends.map((item, index) => (
+                                    <div key={index} className="flex items-center gap-4">
+                                        <div className="flex items-center gap-2 w-24 min-w-[6rem] text-gray-500 text-sm">
+                                            <Calendar className="w-4 h-4" />
+                                            <span>{item.date}</span>
+                                        </div>
+                                        <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-blue-600 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10 transition-all duration-500"
+                                                style={{ width: `${item.percent}%` }}
+                                            >
+                                                {item.value}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <div className="h-64 flex items-center justify-center text-gray-400">No data available</div>
+                            )}
                         </div>
                     </div>
 
@@ -261,22 +248,28 @@ const AnalyticsPage = () => {
                             Daily Revenue Trend
                         </h3>
                         <div className="space-y-4">
-                            {revenueTrends.map((item, index) => (
-                                <div key={index} className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2 w-24 min-w-[6rem] text-gray-500 text-sm">
-                                        <Calendar className="w-4 h-4" />
-                                        <span>{item.date}</span>
-                                    </div>
-                                    <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-green-500 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10"
-                                            style={{ width: `${item.percent}%` }}
-                                        >
-                                            {item.value}
+                            {loading ? (
+                                <div className="h-64 flex items-center justify-center text-gray-400">Loading trends...</div>
+                            ) : revenueTrends.length > 0 ? (
+                                revenueTrends.map((item, index) => (
+                                    <div key={index} className="flex items-center gap-4">
+                                        <div className="flex items-center gap-2 w-24 min-w-[6rem] text-gray-500 text-sm">
+                                            <Calendar className="w-4 h-4" />
+                                            <span>{item.date}</span>
+                                        </div>
+                                        <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-green-500 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10 transition-all duration-500"
+                                                style={{ width: `${item.percent}%` }}
+                                            >
+                                                {item.value}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <div className="h-64 flex items-center justify-center text-gray-400">No data available</div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -288,14 +281,14 @@ const AnalyticsPage = () => {
                     </h3>
                     <CustomTable
                         columns={tableColumns}
-                        dataSource={tableData}
-                        loading={false}
+                        dataSource={paginatedData}
+                        loading={loading}
                         rowKey="id"
                     />
                     <CustomPagination
                         current={currentPage}
-                        total={50} // Mock total
-                        pageSize={10}
+                        total={tableData.length}
+                        pageSize={pageSize}
                         onChange={(page) => setCurrentPage(page)}
                     />
                 </div>
@@ -305,3 +298,4 @@ const AnalyticsPage = () => {
 };
 
 export default AnalyticsPage;
+
