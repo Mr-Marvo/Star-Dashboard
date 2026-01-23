@@ -43,19 +43,14 @@ export default function SettingsPage() {
 
     useEffect(() => {
         if (user) {
-            // const types = user.notificationAlertType || [];
-            // setNotifications({
-            //     // email: types.includes("EMAIL_NOTIFICATION"),
-            //     video: types.includes("VIDEO_MODERATION_ALERTS"),
-            //     campaign: types.includes("CAMPAIGN_REMINDERS"),
-            //     reports: types.includes("WEEKLY_REPORTS")
-            // });
-
-            setProfile({
-                fullName: user.fullName || '',
-                userName: user.userName || '',
-                role: formatRole(user.type)
-            });
+            const timer = setTimeout(() => {
+                setProfile({
+                    fullName: user.fullName || '',
+                    userName: user.userName || '',
+                    role: formatRole(user.type)
+                });
+            }, 0);
+            return () => clearTimeout(timer);
         }
     }, [user]);
 

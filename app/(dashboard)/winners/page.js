@@ -70,7 +70,6 @@ export default function WinnersPage() {
         };
 
         fetchCampaigns();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, debouncedSearch]);
 
     const handleRowClick = (campaign) => {
