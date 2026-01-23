@@ -242,7 +242,6 @@ const AnalyticsPage = () => {
                         </div>
                     </div>
 
-                    {/* Revenue Trends */}
                     <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
                         <h3 className="font-bold text-lg mb-6 text-gray-900">
                             Daily Revenue Trend
