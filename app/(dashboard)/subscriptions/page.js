@@ -32,9 +32,12 @@ export default function SubscriptionsPage() {
     const { trigger: cancelSub } = useLazyFetch(cancelSubscription);
     const { trigger: getStaticData } = useLazyFetch(getSubscriptionStaticData);
 
+    const getStaticDataRef = React.useRef(getStaticData);
+    getStaticDataRef.current = getStaticData;
+
     const fetchStaticData = React.useCallback(async () => {
         try {
-            const response = await getStaticData({});
+            const response = await getStaticDataRef.current({});
             if (response?.data?.success) {
                 const apiData = response.data.data;
                 setStats({
@@ -45,11 +48,19 @@ export default function SubscriptionsPage() {
         } catch (error) {
             console.error("Error fetching static data", error);
         }
-    }, [getStaticData]);
+    }, []);
 
     useEffect(() => {
-        fetchStaticData();
-    }, [fetchStaticData]);
+        let mounted = true;
+        const timer = setTimeout(() => {
+            if (mounted) fetchStaticData();
+        }, 0);
+        return () => {
+            mounted = false;
+            clearTimeout(timer);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Fetch Subscriptions List
     const fetchSubscriptions = React.useCallback(async () => {
@@ -74,16 +85,16 @@ export default function SubscriptionsPage() {
             if (response?.data?.success) {
                 const { data: listData, total, page, perPage } = response.data.data;
                 setSubscriptions(listData);
-                setPagination(prev => ({
-                    ...prev,
-                    page,
-                    perPage,
-                    total
-                }));
+                // Prevent infinite loop by checking if state actually needs to change
+                setPagination(prev => {
+                    if (prev.page === page && prev.perPage === perPage && prev.total === total) {
+                        return prev;
+                    }
+                    return { ...prev, page, perPage, total };
+                });
             }
         } catch (error) {
             console.error('Failed to fetch subscriptions', error);
-            // message.error('Failed to load subscriptions'); 
         } finally {
             setLoading(false);
         }
@@ -91,11 +102,16 @@ export default function SubscriptionsPage() {
 
     // Debounce search and effect
     useEffect(() => {
+        let mounted = true;
         const timer = setTimeout(() => {
-            fetchSubscriptions();
+            if (mounted) fetchSubscriptions();
         }, 300);
-        return () => clearTimeout(timer);
-    }, [activeTab, searchText, pagination.page, fetchSubscriptions]); // Depend on page, tab, search
+        return () => {
+            mounted = false;
+            clearTimeout(timer);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab, searchText, pagination.page]);
 
     const handlePageChange = (page) => {
         setPagination(prev => ({ ...prev, page }));
