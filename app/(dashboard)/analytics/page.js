@@ -64,7 +64,7 @@ const AnalyticsPage = () => {
         },
         {
             title: "Total Revenue",
-            value: `$${(totals.totalRevenue || 0).toLocaleString()}`,
+            value: `LKR ${(totals.totalRevenue || 0).toLocaleString()}`,
             icon: <DollarSign className="w-6 h-6 text-white" />,
             bgColor: "bg-orange-500",
         },
@@ -85,7 +85,7 @@ const AnalyticsPage = () => {
 
     const revenueTrends = (daily.revenue || []).slice(-10).reverse().map(item => ({
         date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        value: `RS${item.value}`,
+        value: `LKR ${item.value}`,
         numericValue: item.value,
         percent: calculatePercent(item.value, daily.revenue)
     }));
@@ -106,7 +106,7 @@ const AnalyticsPage = () => {
             activeUsers,
             videos,
             votes,
-            revenue: `RS ${revenue.toLocaleString()}`,
+            revenue: `LKR ${revenue.toLocaleString()}`,
         };
     }).reverse();
 
