@@ -260,7 +260,7 @@ export default function SubscriptionsPage() {
                     <Search className="text-gray-400 mr-3" size={20} />
                     <input
                         type="text"
-                        placeholder="Search by email username"
+                        placeholder="Search by username"
                         value={searchText}
                         onChange={(e) => { setSearchText(e.target.value); setPagination(p => ({ ...p, page: 1 })); }}
                         className="bg-transparent border-none outline-none w-full text-gray-700 placeholder-gray-400 text-sm"
@@ -291,7 +291,7 @@ export default function SubscriptionsPage() {
 
 function StatCard({ title, value, icon, iconBg }) {
     return (
-        <div className="border border-gray-100 rounded-xl p-6 flex justify-between items-center bg-white shadow-sm">
+        <div className="border border-gray-100 rounded-xl p-5 flex justify-between items-center bg-white shadow-sm gap-2">
             <div>
                 <p className="text-gray-500 text-sm font-medium mb-1">{title}</p>
                 <h3 className="text-2xl font-bold text-[#1e1e2d]">{value}</h3>

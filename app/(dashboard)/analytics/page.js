@@ -85,7 +85,8 @@ const AnalyticsPage = () => {
 
     const revenueTrends = (daily.revenue || []).slice(-10).reverse().map(item => ({
         date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        value: `$${item.value}`,
+        value: `RS${item.value}`,
+        numericValue: item.value,
         percent: calculatePercent(item.value, daily.revenue)
     }));
 
@@ -105,7 +106,7 @@ const AnalyticsPage = () => {
             activeUsers,
             videos,
             votes,
-            revenue: `$${revenue.toLocaleString()}`,
+            revenue: `RS ${revenue.toLocaleString()}`,
         };
     }).reverse();
 
@@ -228,8 +229,9 @@ const AnalyticsPage = () => {
                                         </div>
                                         <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-blue-600 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10 transition-all duration-500"
-                                                style={{ width: `${item.percent}%` }}
+                                                className={`h-full rounded-full flex items-center justify-end px-3 text-xs font-medium relative z-10 transition-all duration-500 ${item.value > 0 ? "bg-blue-600 text-white" : "text-gray-400"
+                                                    }`}
+                                                style={{ width: item.value > 0 ? `${item.percent}%` : "100%" }}
                                             >
                                                 {item.value}
                                             </div>
@@ -258,8 +260,9 @@ const AnalyticsPage = () => {
                                         </div>
                                         <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-green-500 rounded-full flex items-center justify-end px-3 text-white text-xs font-medium relative z-10 transition-all duration-500"
-                                                style={{ width: `${item.percent}%` }}
+                                                className={`h-full rounded-full text-end flex items-center justify-end px-3 text-xxs font-medium relative z-10 transition-all duration-500 ${item.numericValue > 0 ? "bg-green-500 text-white" : "text-gray-400"
+                                                    }`}
+                                                style={{ width: item.numericValue > 0 ? `${item.percent}%` : "100%" }}
                                             >
                                                 {item.value}
                                             </div>

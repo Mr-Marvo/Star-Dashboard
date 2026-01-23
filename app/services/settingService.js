@@ -9,5 +9,5 @@ export const changePassword = async (data) => {
 };
 
 export const updateProfileInformation = async (data) => {
-    return authorizedAxiosInstance.put("/admin/update-profile-information", data);
+    return authorizedAxiosInstance.post("/admin/update-profile-information", data);
 };
