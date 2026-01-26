@@ -57,11 +57,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             icon: <UserOutlined />,
             label: <Link href="/user-management">User Management</Link>,
         },
-        {
-            key: '/creator-management',
-            icon: <TeamOutlined />,
-            label: <Link href="/creator-management">Creator Management</Link>,
-        },
+        // {
+        //     key: '/creator-management',
+        //     icon: <TeamOutlined />,
+        //     label: <Link href="/creator-management">Creator Management</Link>,
+        // },
         {
             key: '/campaign-management',
             icon: <TrophyOutlined />,

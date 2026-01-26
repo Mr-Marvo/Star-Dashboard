@@ -67,7 +67,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
     }, [debouncedTitle]);
 
     const stepFields = {
-        0: ["title", "description", "pricePool"],
+        0: ["title", "description", "pricePool", "campaignImageUrl"],
         1: [
             "enrollStartTime", "completeTime", "votingStartTime",
             "reviewStartTime"
@@ -247,13 +247,13 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                     </Form.Item>
                     <Form.Item
                         name="campaignImageUrl"
-                        rules={[{ required: false, message: 'Please upload an image' }]}
+                        rules={[{ required: true, message: 'Please upload an image' }]}
                         style={{ display: 'none' }}
                     >
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label={<span className="text-white">Campaign Image(Optional)</span>}>
+                    <Form.Item label={<span className="text-white">Campaign Image *</span>}>
                         <Upload.Dragger
                             className="!bg-[#2e2e48] !border-[#444] !border-dashed hover:!border-purple-500"
                             accept="image/*"
