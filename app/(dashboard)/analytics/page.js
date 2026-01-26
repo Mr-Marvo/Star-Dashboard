@@ -258,14 +258,16 @@ const AnalyticsPage = () => {
                                             <Calendar className="w-4 h-4" />
                                             <span>{item.date}</span>
                                         </div>
-                                        <div className="flex-1 w-full relative h-8 bg-gray-50 rounded-full overflow-hidden">
-                                            <div
-                                                className={`h-full rounded-full text-end flex items-center justify-end px-3 text-xxs font-medium relative z-10 transition-all duration-500 ${item.numericValue > 0 ? "bg-green-500 text-white" : "text-gray-400"
-                                                    }`}
-                                                style={{ width: item.numericValue > 0 ? `${item.percent}%` : "100%" }}
-                                            >
-                                                {item.value}
+                                        <div className="flex-1 flex items-center gap-3">
+                                            <div className="flex-1 h-8 bg-gray-100 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full transition-all duration-500 ${item.numericValue > 0 ? "bg-green-500" : "bg-transparent"}`}
+                                                    style={{ width: `${item.percent}%` }}
+                                                />
                                             </div>
+                                            <span className="text-sm font-medium text-gray-700 min-w-[6rem] text-right">
+                                                {item.value}
+                                            </span>
                                         </div>
                                     </div>
                                 ))

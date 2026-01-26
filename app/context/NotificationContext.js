@@ -4,6 +4,8 @@ import { ConfigProvider, notification } from "antd";
 import { createContext, useState } from "react";
 import { Check, CircleX } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { getAllNotifications } from "../services/notificationService";
+import { useEffect } from "react";
 
 export const NotificationContext = createContext({});
 
@@ -13,6 +15,28 @@ export function NotificationContextProvider({ children }) {
     const [unreadCount, setUnreadCount] = useState(0);
     const placement = "bottomLeft";
     const router = useRouter();
+
+    // Poll for notifications
+    useEffect(() => {
+        const fetchUnreadCount = async () => {
+            try {
+                const response = await getAllNotifications({ page: 1, limit: 1 });
+                if (response?.data?.success) {
+                    setUnreadCount(response.data.data.unreadCount || 0);
+                }
+            } catch (error) {
+                console.error("Failed to poll notifications:", error);
+            }
+        };
+
+        // Initial fetch
+        fetchUnreadCount();
+
+        // Set interval for polling (every 30 seconds)
+        const intervalId = setInterval(fetchUnreadCount, 30000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     const openNotification = (type, title, description, key) => {
         let backgroundColor = "";
