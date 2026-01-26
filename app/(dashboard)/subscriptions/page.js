@@ -176,6 +176,7 @@ export default function SubscriptionsPage() {
             key: 'status',
             render: (status) => <StatusBadge status={status} />
         },
+        /*
         {
             title: 'Actions',
             key: 'actions',
@@ -190,6 +191,7 @@ export default function SubscriptionsPage() {
                 )
             )
         }
+        */
     ];
 
     return (
