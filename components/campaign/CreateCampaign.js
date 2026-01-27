@@ -40,6 +40,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
         minAgeLimit: null,
         rules: [],
     });
+    const [fileList, setFileList] = useState([]);
 
     const debouncedTitle = useDebounce(formData.title, 500);
 
@@ -108,6 +109,11 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
     }, [currentStep]);
 
     useEffect(() => {
+        if (open) validateCurrentStep();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formData, isTitleValid, validatingTitle]);
+
+    useEffect(() => {
         if (open) {
             form.setFieldsValue(formData);
         }
@@ -150,6 +156,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
         setCurrentStep(0);
         form.resetFields();
         setImageUrl('');
+        setFileList([]);
         setFormData({
             title: '',
             description: '',
@@ -258,6 +265,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                             className="!bg-[#2e2e48] !border-[#444] !border-dashed hover:!border-purple-500"
                             accept="image/*"
                             showUploadList={true}
+                            fileList={fileList}
                             disabled={uploadLoading}
                             beforeUpload={async (file) => {
                                 const isLt5M = file.size / 1024 / 1024 < 5;
@@ -281,6 +289,17 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                                         }));
                                         form.setFieldValue("campaignImageUrl", url);
                                         onFormValuesChange({}, { ...form.getFieldsValue(), campaignImageUrl: url });
+
+                                        // Add file to fileList with uploaded status
+                                        setFileList([{
+                                            uid: file.uid,
+                                            name: file.name,
+                                            status: 'done',
+                                            url: url,
+                                        }]);
+
+                                        // Trigger validation after state updates
+                                        setTimeout(() => validateCurrentStep(), 0);
                                     }
                                 } catch (err) {
                                     console.error("Upload failed", err);
@@ -289,6 +308,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                             }}
                             onRemove={() => {
                                 setImageUrl('');
+                                setFileList([]);
                                 setFormData((prev) => ({ ...prev, campaignImageUrl: null }));
                                 form.setFieldValue("campaignImageUrl", null);
                                 openNotification('success', 'The campaign image has been removed.');
