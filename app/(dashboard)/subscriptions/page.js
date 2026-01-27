@@ -154,7 +154,7 @@ export default function SubscriptionsPage() {
             key: 'amount',
             render: (amount) => (
                 <span className="font-medium text-green-600">
-                    LKR. {amount}<span className="text-gray-400 text-xs font-normal ml-1">per month</span>
+                    LKR {amount}<span className="text-gray-400 text-xs font-normal ml-1">per month</span>
                 </span>
             )
         },
