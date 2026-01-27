@@ -246,7 +246,7 @@ export default function UserManagementPage() {
                 {/* Search */}
                 <Input
                     prefix={<Search className="text-gray-400" size={18} />}
-                    placeholder="Search by email username"
+                    placeholder="Search by username"
                     className="!bg-[#f9fafb] !border-none !h-12 !text-base !rounded-lg"
                     value={searchText}
                     onChange={(e) => {
