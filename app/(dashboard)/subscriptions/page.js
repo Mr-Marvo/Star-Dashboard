@@ -154,7 +154,7 @@ export default function SubscriptionsPage() {
             key: 'amount',
             render: (amount) => (
                 <span className="font-medium text-green-600">
-                    ${amount}<span className="text-gray-400 text-xs font-normal ml-1">per month</span>
+                    LKR{amount}<span className="text-gray-400 text-xs font-normal ml-1">per month</span>
                 </span>
             )
         },
@@ -207,7 +207,7 @@ export default function SubscriptionsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
                 <StatCard
                     title="Monthly Revenue"
-                    value={`$${stats.monthlyRevenue}`}
+                    value={`LKR${stats.monthlyRevenue}`}
                     icon={<DollarSign size={24} className="text-white" />}
                     iconBg="bg-green-500"
                 />
