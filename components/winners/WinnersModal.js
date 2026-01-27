@@ -72,7 +72,7 @@ export default function WinnersModal({ open, onCancel, campaignId }) {
             open={open}
             onCancel={onCancel}
             footer={null}
-            closeIcon={<X className="text-gray-500 hover:text-gray-800 transition-colors" size={20} />}
+            closeIcon={null}
             width={800}
             centered
             className="winner-modal"
@@ -89,6 +89,12 @@ export default function WinnersModal({ open, onCancel, campaignId }) {
             ) : (
                 <>
                     <div className="bg-[#ecfdf5] p-6 relative">
+                        <button
+                            onClick={onCancel}
+                            className="absolute top-4 right-4 p-1 rounded-lg hover:bg-gray-200/50 transition-colors z-10"
+                        >
+                            <X size={20} className="text-gray-600" />
+                        </button>
                         <div className="flex items-center gap-5">
                             <div className="w-16 h-16 rounded-full bg-[#af00af] flex items-center justify-center text-white font-bold text-2xl shadow-sm shrink-0">
                                 {campaignData.title?.charAt(0)}

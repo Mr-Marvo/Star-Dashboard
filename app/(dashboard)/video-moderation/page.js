@@ -460,7 +460,7 @@ export default function VideoModerationPage() {
                 width={800}
                 destroyOnHidden
                 centered
-                closeIcon={<X size={20} className="text-gray-500" />}
+                closeIcon={null}
                 className="custom-modal"
                 styles={{
                     content: { padding: 0, borderRadius: '16px', overflow: 'hidden' }
@@ -468,7 +468,13 @@ export default function VideoModerationPage() {
             >
                 {selectedVideo && (
                     <div className="p-0">
-                        <div className={`p-6 bg-[#ECFDF5] border-b border-gray-100`}>
+                        <div className={`relative p-6 bg-[#ECFDF5] border-b border-gray-100`}>
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="absolute top-4 right-4 p-1 rounded-lg hover:bg-gray-200/50 transition-colors z-10"
+                            >
+                                <X size={20} className="text-gray-600" />
+                            </button>
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
                                     {selectedVideo.user?.profilePicture ? (
