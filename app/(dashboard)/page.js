@@ -27,6 +27,7 @@ import {
 } from 'recharts';
 import { getDashboardAnalyticsCounts, getSubscriptionGrowths } from '@/app/services/dashboardService';
 import CustomTable from '@/components/CustomTable';
+import EntryIcon from '@/components/icons/EntryIcon';
 
 
 
@@ -145,21 +146,9 @@ export default function DashboardOverview() {
             dataIndex: 'entriesUserCount',
             key: 'entries',
             render: (count) => (
-                <div className="flex items-center gap-4 min-w-[200px]">
-                    <div className="flex-1">
-                        <div className="flex justify-between mb-1">
-                            <span className="text-xs font-medium text-gray-600">{count || 0} Entries</span>
-                            <span className="text-xs font-medium text-gray-600">
-                                {count > 0 ? '100%' : '0%'}
-                            </span>
-                        </div>
-                        <div className="w-full bg-gray-100 rounded-full h-1.5">
-                            <div
-                                className={`h-1.5 rounded-full transition-all duration-500 ${count > 0 ? 'bg-green-500 w-full' : 'bg-gray-300 w-0'
-                                    }`}
-                            ></div>
-                        </div>
-                    </div>
+                <div className="flex items-center gap-2">
+                    <EntryIcon size={20} />
+                    <span className="text-sm font-medium text-gray-700">{count || 0}</span>
                 </div>
             )
         }
