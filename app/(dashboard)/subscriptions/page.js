@@ -152,9 +152,9 @@ export default function SubscriptionsPage() {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
-            render: (amount) => (
+            render: (amount, record) => (
                 <span className="font-medium text-green-600">
-                    LKR {amount}<span className="text-gray-400 text-xs font-normal ml-1">per month</span>
+                    LKR {amount}<span className="text-gray-400 text-xs font-normal ml-1 lowercase">per {record.billingPeriod || 'month'}</span>
                 </span>
             )
         },

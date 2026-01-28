@@ -100,7 +100,6 @@ export default function SettingsPage() {
         const typeToToggle = mapping[key];
         let newTypes = [...currentTypes];
 
-        // Calculate the hypothetical new state for the clicked key
         const willBeChecked = !notifications[key];
 
         if (willBeChecked) {
@@ -113,13 +112,12 @@ export default function SettingsPage() {
 
         if (response) {
             setNotifications(prev => ({ ...prev, [key]: willBeChecked }));
-            fetchUser(); // Refresh user data to sync across app
+            fetchUser();
         }
     };
 
     const [validationErrors, setValidationErrors] = useState({});
 
-    // ... (existing effects)
 
     const handleProfileUpdate = async () => {
         const errors = {};
@@ -140,7 +138,7 @@ export default function SettingsPage() {
             return;
         }
 
-        setValidationErrors({}); // Clear errors
+        setValidationErrors({});
 
         const response = await updateProfile({
             fullName: profile.fullName,
@@ -149,10 +147,10 @@ export default function SettingsPage() {
 
         if (response?.data?.success) {
             if (user?.userName !== profile.userName) {
-                // If email changed, logout
+
                 handleLogout();
             } else {
-                fetchUser(); // Refresh user data in context
+                fetchUser();
             }
         }
     };
@@ -179,7 +177,7 @@ export default function SettingsPage() {
             return;
         }
 
-        setValidationErrors({}); // Clear errors
+        setValidationErrors({});
 
         const response = await updatePassword(passwords, { successMsg: true, errorMsg: true });
         if (response?.data?.success) {
