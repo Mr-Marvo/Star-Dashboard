@@ -186,7 +186,7 @@ export default function WinnersPage() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 mb-10 flex flex-col gap-4">
-                <div className="text-gray-500 text-sm font-medium">Top 3 Finalist</div>
+                <div className="text-gray-500 text-sm font-medium">Final Selection List</div>
                 <div className="w-full flex flex-col md:flex-row items-center justify-between px-2 md:px-6 bg-gray-50/50 rounded-xl py-4 gap-4 md:gap-0">
                     {latestWinner?.firstWinnerVideo?.user?.name && (
                         <div className="flex items-center gap-4 w-full md:w-auto">
