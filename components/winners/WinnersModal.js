@@ -118,96 +118,102 @@ export default function WinnersModal({ open, onCancel, campaignId }) {
                         <div className="flex justify-center items-end gap-6 pt-10 pb-12 mb-4 mx-6">
 
                             {/* Second Winner */}
-                            <div className="flex flex-col items-center relative z-10 w-44">
-                                <div className="relative mb-3">
-                                    <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-[#9ca3af]">
-                                        <Avatar size={72} src={getAvatarSrc(secondWinner?.profilePicture)} className="bg-[#9ca3af] text-xl font-bold">{secondWinner?.user ? secondWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                            {secondWinner?.user && (
+                                <div className="flex flex-col items-center relative z-10 w-44">
+                                    <div className="relative mb-3">
+                                        <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-[#9ca3af]">
+                                            <Avatar size={72} src={getAvatarSrc(secondWinner?.profilePicture)} className="bg-[#9ca3af] text-xl font-bold">{secondWinner?.user ? secondWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                                        </div>
+                                        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-8 h-8 rounded-full bg-[#64748b] border-2 border-white flex items-center justify-center text-white font-bold text-sm shadow-sm z-20">
+                                            2
+                                        </div>
                                     </div>
-                                    <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-8 h-8 rounded-full bg-[#64748b] border-2 border-white flex items-center justify-center text-white font-bold text-sm shadow-sm z-20">
-                                        2
+
+                                    <div className="text-center w-full">
+                                        <h3 className="font-bold text-lg text-black leading-tight mb-1" title={secondWinner?.user}>{secondWinner?.user?.length > 10 ? `${secondWinner.user.slice(0, 10)}...` : secondWinner.user}</h3>
+                                        <p className="text-[#94a3b8] text-xs mb-4 font-medium px-2 truncate w-full">{secondWinner?.title || '-'}</p>
+
+                                        <div className="bg-[#64748b] text-white rounded-2xl py-5 px-2 shadow-sm text-center w-full relative h-[120px] flex flex-col justify-center items-center mb-3">
+                                            <Trophy className="w-6 h-6 text-gray-300 mb-2" strokeWidth={1.5} />
+                                            <div className="text-2xl font-bold leading-none mb-1 text-white">{secondWinner?.votesCount?.toLocaleString() || 0}</div>
+                                            <div className="text-[10px] text-gray-300 font-medium tracking-wide">Votes</div>
+                                        </div>
+
+                                        <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
+                                            <Eye className="w-4 h-4 text-[#8b5cf6]" />
+                                            <span className="text-black font-bold text-sm">{secondWinner?.viewsCount?.toLocaleString() || 0}</span>
+                                            <span className="text-[10px] text-gray-400 font-medium">Views</span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div className="text-center w-full">
-                                    <h3 className="font-bold text-lg text-black leading-tight mb-1" title={secondWinner?.user}>{secondWinner?.user?.length > 10 ? `${secondWinner.user.slice(0, 10)}...` : (secondWinner?.user || 'No Winner')}</h3>
-                                    <p className="text-[#94a3b8] text-xs mb-4 font-medium px-2 truncate w-full">{secondWinner?.title || '-'}</p>
-
-                                    <div className="bg-[#64748b] text-white rounded-2xl py-5 px-2 shadow-sm text-center w-full relative h-[120px] flex flex-col justify-center items-center mb-3">
-                                        <Trophy className="w-6 h-6 text-gray-300 mb-2" strokeWidth={1.5} />
-                                        <div className="text-2xl font-bold leading-none mb-1 text-white">{secondWinner?.votesCount?.toLocaleString() || 0}</div>
-                                        <div className="text-[10px] text-gray-300 font-medium tracking-wide">Votes</div>
-                                    </div>
-
-                                    <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
-                                        <Eye className="w-4 h-4 text-[#8b5cf6]" />
-                                        <span className="text-black font-bold text-sm">{secondWinner?.viewsCount?.toLocaleString() || 0}</span>
-                                        <span className="text-[10px] text-gray-400 font-medium">Views</span>
-                                    </div>
-                                </div>
-                            </div>
+                            )}
 
                             {/* First Winner */}
-                            <div className="flex flex-col items-center relative z-20 w-52 -mt-10">
-                                <div className="relative mb-3">
-                                    <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-[#fbbf24]">
-                                        <Avatar size={88} src={getAvatarSrc(firstWinner?.profilePicture)} className="bg-[#fbbf24] text-3xl font-bold text-white">{firstWinner?.user ? firstWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                            {firstWinner?.user && (
+                                <div className="flex flex-col items-center relative z-20 w-52 -mt-10">
+                                    <div className="relative mb-3">
+                                        <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-[#fbbf24]">
+                                            <Avatar size={88} src={getAvatarSrc(firstWinner?.profilePicture)} className="bg-[#fbbf24] text-3xl font-bold text-white">{firstWinner?.user ? firstWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                                        </div>
+                                        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-10 h-10 rounded-full bg-[#fbbf24] border-2 border-white flex items-center justify-center text-white shadow-sm z-20">
+                                            <Trophy size={18} fill="white" strokeWidth={0} />
+                                        </div>
                                     </div>
-                                    <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-10 h-10 rounded-full bg-[#fbbf24] border-2 border-white flex items-center justify-center text-white shadow-sm z-20">
-                                        <Trophy size={18} fill="white" strokeWidth={0} />
+
+                                    <div className="text-center w-full">
+                                        <h3 className="font-bold text-xl text-black leading-tight mb-1" title={firstWinner?.user}>{firstWinner?.user?.length > 10 ? `${firstWinner.user.slice(0, 10)}...` : firstWinner.user}</h3>
+                                        <div className="flex justify-center mb-1">
+                                            <span className="border border-[#fbbf24] text-[#d97706] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide bg-orange-50 flex items-center gap-1">
+                                                <Trophy size={10} strokeWidth={2} /> Champion
+                                            </span>
+                                        </div>
+                                        <p className="text-[#94a3b8] text-sm mb-4 font-medium px-2 truncate w-full">{firstWinner?.title || '-'}</p>
+
+                                        <div className="bg-[#fbbf24] text-white rounded-2xl py-6 px-2 shadow-lg shadow-orange-200 text-center w-full relative h-[140px] flex flex-col justify-center items-center mb-3">
+                                            <Trophy className="w-8 h-8 text-white mb-2" strokeWidth={1.5} />
+                                            <div className="text-4xl font-bold leading-none mb-1 text-white">{firstWinner?.votesCount?.toLocaleString() || 0}</div>
+                                            <div className="text-xs text-orange-50 font-medium tracking-wide">Votes</div>
+                                        </div>
+
+                                        <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
+                                            <Eye className="w-4 h-4 text-[#8b5cf6]" />
+                                            <span className="text-black font-bold text-sm">{firstWinner?.viewsCount?.toLocaleString() || 0}</span>
+                                            <span className="text-[10px] text-gray-400 font-medium">Views</span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div className="text-center w-full">
-                                    <h3 className="font-bold text-xl text-black leading-tight mb-1" title={firstWinner?.user}>{firstWinner?.user?.length > 10 ? `${firstWinner.user.slice(0, 10)}...` : (firstWinner?.user || 'No Winner')}</h3>
-                                    <div className="flex justify-center mb-1">
-                                        <span className="border border-[#fbbf24] text-[#d97706] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide bg-orange-50 flex items-center gap-1">
-                                            <Trophy size={10} strokeWidth={2} /> Champion
-                                        </span>
-                                    </div>
-                                    <p className="text-[#94a3b8] text-sm mb-4 font-medium px-2 truncate w-full">{firstWinner?.title || '-'}</p>
-
-                                    <div className="bg-[#fbbf24] text-white rounded-2xl py-6 px-2 shadow-lg shadow-orange-200 text-center w-full relative h-[140px] flex flex-col justify-center items-center mb-3">
-                                        <Trophy className="w-8 h-8 text-white mb-2" strokeWidth={1.5} />
-                                        <div className="text-4xl font-bold leading-none mb-1 text-white">{firstWinner?.votesCount?.toLocaleString() || 0}</div>
-                                        <div className="text-xs text-orange-50 font-medium tracking-wide">Votes</div>
-                                    </div>
-
-                                    <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
-                                        <Eye className="w-4 h-4 text-[#8b5cf6]" />
-                                        <span className="text-black font-bold text-sm">{firstWinner?.viewsCount?.toLocaleString() || 0}</span>
-                                        <span className="text-[10px] text-gray-400 font-medium">Views</span>
-                                    </div>
-                                </div>
-                            </div>
+                            )}
 
                             {/* Third Winner */}
-                            <div className="flex flex-col items-center relative z-10 w-44">
-                                <div className="relative mb-3">
-                                    <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-[#ef4444]">
-                                        <Avatar size={72} src={getAvatarSrc(thirdWinner?.profilePicture)} className="bg-[#ef4444] text-xl font-bold text-white">{thirdWinner?.user ? thirdWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                            {thirdWinner?.user && (
+                                <div className="flex flex-col items-center relative z-10 w-44">
+                                    <div className="relative mb-3">
+                                        <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-[#ef4444]">
+                                            <Avatar size={72} src={getAvatarSrc(thirdWinner?.profilePicture)} className="bg-[#ef4444] text-xl font-bold text-white">{thirdWinner?.user ? thirdWinner.user.substring(0, 2).toUpperCase() : "NA"}</Avatar>
+                                        </div>
+                                        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-8 h-8 rounded-full bg-[#ef4444] border-2 border-white flex items-center justify-center text-white font-bold text-sm shadow-sm z-20">
+                                            3
+                                        </div>
                                     </div>
-                                    <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-8 h-8 rounded-full bg-[#ef4444] border-2 border-white flex items-center justify-center text-white font-bold text-sm shadow-sm z-20">
-                                        3
+
+                                    <div className="text-center w-full">
+                                        <h3 className="font-bold text-lg text-black leading-tight mb-1" title={thirdWinner?.user}>{thirdWinner?.user?.length > 10 ? `${thirdWinner.user.slice(0, 10)}...` : thirdWinner.user}</h3>
+                                        <p className="text-[#94a3b8] text-xs mb-4 font-medium px-2 truncate w-full">{thirdWinner?.title || '-'}</p>
+
+                                        <div className="bg-[#ff0000] text-white rounded-2xl py-5 px-2 shadow-sm text-center w-full relative h-[120px] flex flex-col justify-center items-center mb-3">
+                                            <Trophy className="w-6 h-6 text-red-200 mb-2" strokeWidth={1.5} />
+                                            <div className="text-2xl font-bold leading-none mb-1 text-white">{thirdWinner?.votesCount?.toLocaleString() || 0}</div>
+                                            <div className="text-[10px] text-red-100 font-medium tracking-wide">Votes</div>
+                                        </div>
+
+                                        <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
+                                            <Eye className="w-4 h-4 text-[#8b5cf6]" />
+                                            <span className="text-black font-bold text-sm">{thirdWinner?.viewsCount?.toLocaleString() || 0}</span>
+                                            <span className="text-[10px] text-gray-400 font-medium">Views</span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div className="text-center w-full">
-                                    <h3 className="font-bold text-lg text-black leading-tight mb-1" title={thirdWinner?.user}>{thirdWinner?.user?.length > 10 ? `${thirdWinner.user.slice(0, 10)}...` : (thirdWinner?.user || 'No Winner')}</h3>
-                                    <p className="text-[#94a3b8] text-xs mb-4 font-medium px-2 truncate w-full">{thirdWinner?.title || '-'}</p>
-
-                                    <div className="bg-[#ff0000] text-white rounded-2xl py-5 px-2 shadow-sm text-center w-full relative h-[120px] flex flex-col justify-center items-center mb-3">
-                                        <Trophy className="w-6 h-6 text-red-200 mb-2" strokeWidth={1.5} />
-                                        <div className="text-2xl font-bold leading-none mb-1 text-white">{thirdWinner?.votesCount?.toLocaleString() || 0}</div>
-                                        <div className="text-[10px] text-red-100 font-medium tracking-wide">Votes</div>
-                                    </div>
-
-                                    <div className="bg-white border border-gray-100 rounded-lg py-2 px-3 shadow-sm flex items-center justify-center gap-2 w-full">
-                                        <Eye className="w-4 h-4 text-[#8b5cf6]" />
-                                        <span className="text-black font-bold text-sm">{thirdWinner?.viewsCount?.toLocaleString() || 0}</span>
-                                        <span className="text-[10px] text-gray-400 font-medium">Views</span>
-                                    </div>
-                                </div>
-                            </div>
+                            )}
                         </div>
 
                         <div className="px-6 pb-6 pt-2">

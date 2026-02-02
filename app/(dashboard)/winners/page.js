@@ -188,39 +188,45 @@ export default function WinnersPage() {
             <div className="bg-white p-6 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 mb-10 flex flex-col gap-4">
                 <div className="text-gray-500 text-sm font-medium">Top 3 Finalist</div>
                 <div className="w-full flex flex-col md:flex-row items-center justify-between px-2 md:px-6 bg-gray-50/50 rounded-xl py-4 gap-4 md:gap-0">
-                    <div className="flex items-center gap-4 w-full md:w-auto">
-                        <div className="w-9 h-9 rounded-full bg-[#f97316] text-white flex items-center justify-center font-bold shadow-md shadow-orange-200 shrink-0">1</div>
-                        <div>
-                            <p className="font-bold text-base text-black">
-                                {latestWinner?.firstWinnerVideo?.user?.name || 'No Winner'}
-                            </p>
-                            <p className="text-xs text-gray-500 font-medium">
-                                {latestWinner?.firstWinnerVideo?.votesCount ? latestWinner.firstWinnerVideo.votesCount.toLocaleString() : 0} votes
-                            </p>
+                    {latestWinner?.firstWinnerVideo?.user?.name && (
+                        <div className="flex items-center gap-4 w-full md:w-auto">
+                            <div className="w-9 h-9 rounded-full bg-[#f97316] text-white flex items-center justify-center font-bold shadow-md shadow-orange-200 shrink-0">1</div>
+                            <div>
+                                <p className="font-bold text-base text-black">
+                                    {latestWinner.firstWinnerVideo.user.name}
+                                </p>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    {latestWinner.firstWinnerVideo.votesCount ? latestWinner.firstWinnerVideo.votesCount.toLocaleString() : 0} votes
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-4 w-full md:w-auto">
-                        <div className="w-9 h-9 rounded-full bg-[#64748b] text-white flex items-center justify-center font-bold shadow-md shadow-slate-200 shrink-0">2</div>
-                        <div>
-                            <p className="font-bold text-base text-black">
-                                {latestWinner?.secondWinnerVideo?.user?.name || 'No Winner'}
-                            </p>
-                            <p className="text-xs text-gray-500 font-medium">
-                                {latestWinner?.secondWinnerVideo?.votesCount ? latestWinner.secondWinnerVideo.votesCount.toLocaleString() : 0} votes
-                            </p>
+                    )}
+                    {latestWinner?.secondWinnerVideo?.user?.name && (
+                        <div className="flex items-center gap-4 w-full md:w-auto">
+                            <div className="w-9 h-9 rounded-full bg-[#64748b] text-white flex items-center justify-center font-bold shadow-md shadow-slate-200 shrink-0">2</div>
+                            <div>
+                                <p className="font-bold text-base text-black">
+                                    {latestWinner.secondWinnerVideo.user.name}
+                                </p>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    {latestWinner.secondWinnerVideo.votesCount ? latestWinner.secondWinnerVideo.votesCount.toLocaleString() : 0} votes
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-4 w-full md:w-auto">
-                        <div className="w-9 h-9 rounded-full bg-[#ec4899] text-white flex items-center justify-center font-bold shadow-md shadow-pink-200 shrink-0">3</div>
-                        <div>
-                            <p className="font-bold text-base text-black">
-                                {latestWinner?.thirdWinnerVideo?.user?.name || 'No Winner'}
-                            </p>
-                            <p className="text-xs text-gray-500 font-medium">
-                                {latestWinner?.thirdWinnerVideo?.votesCount ? latestWinner.thirdWinnerVideo.votesCount.toLocaleString() : 0} votes
-                            </p>
+                    )}
+                    {latestWinner?.thirdWinnerVideo?.user?.name && (
+                        <div className="flex items-center gap-4 w-full md:w-auto">
+                            <div className="w-9 h-9 rounded-full bg-[#ec4899] text-white flex items-center justify-center font-bold shadow-md shadow-pink-200 shrink-0">3</div>
+                            <div>
+                                <p className="font-bold text-base text-black">
+                                    {latestWinner.thirdWinnerVideo.user.name}
+                                </p>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    {latestWinner.thirdWinnerVideo.votesCount ? latestWinner.thirdWinnerVideo.votesCount.toLocaleString() : 0} votes
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
 

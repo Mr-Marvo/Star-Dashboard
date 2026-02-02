@@ -219,7 +219,7 @@ export default function SubscriptionsPage() {
                 />
                 <StatCard
                     title="Growth Rate"
-                    value={`+${stats.growthRate}%`}
+                    value={`${stats.growthRate}%`}
                     icon={<TrendingUp size={24} className="text-white" />}
                     iconBg="bg-orange-500"
                 />

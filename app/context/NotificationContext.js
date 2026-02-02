@@ -15,10 +15,17 @@ export function NotificationContextProvider({ children }) {
     const [unreadCount, setUnreadCount] = useState(0);
     const placement = "bottomLeft";
     const router = useRouter();
+    const pathname = usePathname();
 
     // Poll for notifications
     useEffect(() => {
         const fetchUnreadCount = async () => {
+            if (!pathname) return;
+            // Skip fetching on auth pages
+            if (pathname.includes('/login') || pathname.includes('/register') || pathname.includes('/sign-up')) {
+                return;
+            }
+
             try {
                 const response = await getAllNotifications({ page: 1, limit: 1 });
                 if (response?.data?.success) {
@@ -36,7 +43,7 @@ export function NotificationContextProvider({ children }) {
         const intervalId = setInterval(fetchUnreadCount, 30000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [pathname]);
 
     const openNotification = (type, title, description, key) => {
         let backgroundColor = "";
