@@ -52,7 +52,7 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                 return;
             }
 
-            const res = await triggerValidateTitle({ title: debouncedTitle }, { successMsg: false, errorMsg: true });
+            const res = await triggerValidateTitle({ title: debouncedTitle }, { successMsg: false, errorMsg: false });
 
             if (res?.data?.success) {
                 setIsTitleValid(true);
@@ -205,7 +205,8 @@ export default function CreateCampaign({ open, onCancel, onSuccess }) {
                             className="!bg-[#2e2e48] !border-[#444] !text-white placeholder-gray-500"
                         />
                     </Form.Item>
-                    {/* {validatingTitle && <div className="text-blue-400 text-xs">Validating title...</div>} */}
+                    {validatingTitle && <div className="text-blue-400 text-xs mt-1">Validating title...</div>}
+                    {titleError && <div className="text-red-500 text-xs mt-1">{titleError}</div>}
 
 
                     <Form.Item
