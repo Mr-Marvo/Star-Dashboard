@@ -14,10 +14,6 @@ export default function LoginPage() {
     const router = useRouter();
     const [form] = Form.useForm();
 
-    console.log(getCookie('auth-token'))
-    console.log(process.env.NEXT_PUBLIC_API_URL)
-    console.log('xxx')
-
     const { trigger: triggerLogin, loading: loginLoading } = useLazyFetch(loginUser);
     const { trigger: triggerAuth, loading: authLoading } = useLazyFetch(authAdmin);
 

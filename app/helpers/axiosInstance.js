@@ -4,7 +4,6 @@ import { getCookie } from "./storageHelper";
 console.log(getCookie('auth-token'))
 console.log(process.env.NEXT_PUBLIC_API_URL)
 
-
 export const authorizedAxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
