@@ -1,4 +1,4 @@
-import { authorizedAxiosInstance } from "@/app/helpers/axiosInstance";
+import { authorizedAxiosInstance, authorizedAxiosInstancewithBear } from "@/app/helpers/axiosInstance";
 
 
 export const loginUser = async (data) => {
@@ -10,7 +10,7 @@ export const logoutUser = async () => {
 };
 
 export const authAdmin = async () => {
-  return authorizedAxiosInstance.get("/auth/admin/auth");
+  return authorizedAxiosInstancewithBear.get("/auth/admin/auth");
 };
 
 
