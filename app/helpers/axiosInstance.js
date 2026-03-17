@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getLocalStoragedata } from "./storageHelper";
 
 export const authorizedAxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
