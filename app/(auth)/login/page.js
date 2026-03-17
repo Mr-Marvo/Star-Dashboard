@@ -27,7 +27,7 @@ export default function LoginPage() {
         if (response?.data.success) {
             setCookie('auth-token', response?.data?.data, 1);
 
-            const authResponse = await triggerAuth(null, {
+            const authResponse = await triggerAuth(response?.data?.data, {
                 successMsg: false,
                 errorMsg: false
             });
