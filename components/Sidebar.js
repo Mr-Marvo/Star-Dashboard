@@ -40,7 +40,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     const handleLogout = async () => {
         const res = await triggerLogout({}, { successMsg: true, errorMsg: true });
         if (res?.data?.success) {
-            removeCookie("auth-token");
+            removeLocalStorageData("auth-token");
             removeLocalStorageData("userData");
             router.push("/login");
         }

@@ -6,7 +6,7 @@ import { AudioOutlined, MailOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { loginUser, authAdmin } from '@/app/services/authService';
 import useLazyFetch from '@/app/hooks/useLazyFetch';
-import { getCookie, setCookie, setLocalStorageData } from '@/app/helpers/storageHelper';
+import { setLocalStorageData } from '@/app/helpers/storageHelper';
 import { useMounted } from '@/app/hooks/useMounted';
 
 export default function LoginPage() {
@@ -25,9 +25,9 @@ export default function LoginPage() {
 
 
         if (response?.data.success) {
-            setCookie('auth-token', response?.data?.data, 1);
+            setLocalStorageData('auth-token', response?.data?.data);
 
-            const authResponse = await triggerAuth(response?.data?.data, {
+            const authResponse = await triggerAuth(null, {
                 successMsg: false,
                 errorMsg: false
             });

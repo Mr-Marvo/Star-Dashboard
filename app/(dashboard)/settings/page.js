@@ -47,7 +47,7 @@ export default function SettingsPage() {
         } catch (error) {
             console.error("Logout API failed:", error);
         } finally {
-            removeCookie("auth-token");
+            removeLocalStorageData("auth-token");
             removeLocalStorageData("userData");
             router.push("/login");
         }
